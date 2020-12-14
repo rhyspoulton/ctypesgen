@@ -7,6 +7,7 @@ description classes are subclassed from an abstract base class, Description.
 The descriptions module also contains a class, DescriptionCollection, to hold
 lists of Description objects.
 """
+import keyword
 
 
 class DescriptionCollection(object):
@@ -172,10 +173,12 @@ class FunctionDescription(Description):
 
     def __init__(self, name, restype, argtypes, errcheck, variadic, attrib, src):
         super(FunctionDescription, self).__init__(src)
-        # Name, a string
-        self.name = name
         # Name according to C - stored in case description is renamed
         self.cname = name
+	# Name, a string
+        if(keyword.iskeyword(name)):
+              name="_"+name
+        self.name = name
         # A ctype representing return type
         self.restype = restype
         # A list of ctypes representing the argument types
@@ -202,10 +205,12 @@ class VariableDescription(Description):
 
     def __init__(self, name, ctype, src=None):
         super(VariableDescription, self).__init__(src)
-        # Name, a string
-        self.name = name
         # Name according to C - stored in case description is renamed
         self.cname = name
+	# Name, a string
+        if(keyword.iskeyword(name)):
+              name="_"+name
+        self.name = name
         # The type of the variable
         self.ctype = ctype
 
